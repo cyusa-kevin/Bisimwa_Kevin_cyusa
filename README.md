@@ -787,6 +787,43 @@ public class AdvancedOnlineShoppingSystem {
 
         payment.printReceipt();
     }
-}
+
 ```
+# Advanced Stock Management System
+
+## Introduction
+
+The **Advanced Stock Management System** is a Java-based console application designed to manage stock items. It allows users to add items to the stock, view a detailed stock report, and ensures input validation for all item-related details such as item ID, quantity, and price. This simple and efficient application can be useful for businesses or individuals who need a basic tool to track their inventory.
+
+### Key Features:
+- **Add Stock Item**: Input essential information like item ID, name, category, supplier, quantity, and price.
+- **View Stock Report**: Displays a detailed stock report including item ID, name, category, supplier, quantity in stock, price per unit, and total stock value.
+- **Input Validation**: Ensures that all inputs are correct (e.g., integer for item ID, positive integer for quantity, and positive double for price).
+- **Menu Interface**: Simple text-based menu for easy navigation.
+
+---
+
+## Technologies Used
+
+- **Java**: The core programming language used for the implementation.
+- **Scanner**: Used for taking user input through the console.
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+- **Java JDK 8 or higher** (Available from [Oracle](https://www.oracle.com/java/technologies/javase-jdk8-downloads.html)).
+- **Any Java IDE** (e.g., IntelliJ IDEA, Eclipse, or NetBeans).
+
+### Clone the Repository
+
+Clone the repository to your local machine with:
+
+```bash
+git clone https://github.com/yourusername/AdvancedStockManagementSystem.git
+
+
 
