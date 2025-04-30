@@ -1,11 +1,15 @@
 # Bisimwa Kevin Project
-##  Folder containing packages
+##### Folder containing packages
 [BisimwaKevin - Copy.zip](https://github.com/user-attachments/files/19982777/BisimwaKevin.-.Copy.zip)
+
+
+
 This repository contains three Java-based applications that demonstrate core programming concepts through real-world applications. The project includes:
 
 1. **Advanced Motor Vehicle Insurance System**
 2. **Advanced Stock Management System**
 3. **Online Shopping System**
+4. **Menu for whole System
 
 These applications are integrated into one shared system, providing a menu-driven interface that allows the user to interact with any of the systems.
 
@@ -911,8 +915,65 @@ import java.util.Scanner;
         }
     }
 }
+```
+## Menu System Integration
+
+The **Menu System** serves as the central hub that integrates three distinct systems into a single user interface, allowing seamless navigation and interaction with each system. This is a core component of the **Bisimwa Kevin** project, and it is designed to simplify the user's experience by providing easy access to the following three packages:
+
+1. **Advanced Motor Vehicle Insurance System**: Manage various types of motor vehicle insurance policies, including comprehensive, third-party, and collision coverage.
+2. **Advanced Stock Management System**: Track and manage inventory, view detailed stock reports, and add new stock items to your inventory.
+3. **Online Shopping System**: Handle shopping cart functionalities, including item selection, price calculation, and checkout.
+
+### Menu Overview
+
+When the program is launched, a user-friendly menu appears, allowing the user to choose which system they would like to interact with. Each option corresponds to a specific functionality from one of the three packages. 
+
+The menu is designed to be intuitive and efficient, enabling quick navigation between different modules with just a few clicks. Users can easily switch between systems without needing to restart the program, making it more convenient for anyone needing access to multiple functionalities in a single application.
+
+### How It Works
+
+The menu system is implemented using a simple loop that continuously displays options until the user chooses to exit. Below is the core implementation of the menu system that ties together the three different packages:
+
+```java
+package Menu;
+
+import java.util.Scanner;
+
+// Ensure to import the main classes of your systems
+import AdvancedOnlineShoppingSystem.AdvancedOnlineShoppingSystem;
+import AdvancedMotorVehicleInsuranceSystem.Main;
 
 
+ class MainMenu {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
+        while (true) {
+            System.out.println("\n===== Unified Application Menu =====");
+            System.out.println("1. Online Shopping System");
+            System.out.println("2. Motor Vehicle Insurance System");
+            System.out.println("3. Stock Management System");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option (1-4): ");
 
+            String input = scanner.nextLine();
 
+            switch (input) {
+                case "1":
+                    AdvancedOnlineShoppingSystem .main(null);  // Call the main method of Online Shopping System
+                    break;
+                case "2":
+                    AdvancedMotorVehicleInsuranceSystem.Main.main(null);  // Call the main method of Motor Vehicle Insurance System
+                    break;
+                case "3":
+                    AdvancedStockManagementSystem.Main.main(null);  // Call the main method of Stock Management System
+                    break;
+                case "4":
+                    System.out.println("👋 Exiting Unified Menu. Goodbye!");
+                    return;
+                default:
+                    System.out.println("⚠ Invalid choice. Please select 1–4.");
+            }
+        }
+    }
+}
