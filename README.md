@@ -430,3 +430,363 @@ class RoadsideAssistancePolicy extends InsurancePolicy {
 }
 
 ```
+# Advanced Online Shopping System
+
+## Introduction
+
+The **Advanced Online Shopping System** is a Java-based application designed to simulate an advanced online shopping experience. It supports a variety of product categories, including **Electronics**, **Clothing**, **Groceries**, **Books**, and **Accessories**, each with specific attributes and functionality. This system provides a realistic shopping interface, where users can browse products, add them to their cart, and proceed with payments. The application demonstrates advanced object-oriented principles such as **polymorphism**, **inheritance**, and **encapsulation**.
+
+### Key Features:
+
+1. **Product Catalog**: 
+    - **ElectronicsItem**: Items such as laptops with warranty support.
+    - **ClothingItem**: Apparel like T-shirts with size information.
+    - **GroceriesItem**: Perishable items like food, with expiration date tracking.
+    - **BooksItem**: Literature items with ISBN and description.
+    - **AccessoriesItem**: Fashion and gadget accessories, including customer reviews.
+
+2. **Shopping Cart**: 
+    - Allows customers to add items to their cart and view the total price.
+
+3. **Stock Management**: 
+    - Items can be updated in stock by quantity.
+
+4. **Item Validation**: 
+    - Items are validated based on stock availability or expiration dates (for groceries).
+
+5. **Invoice Generation**: 
+    - Once an item is added to the cart, an invoice for the purchase is generated, detailing the product and price.
+
+6. **Payment Processing**: 
+    - Supports payments through **Credit Card** or **PayPal** with receipt generation.
+
+7. **Customer Management**: 
+    - The system allows creation and management of customer information, including email validation and phone number validation.
+
+---
+
+## Technologies Used
+
+- **Java**: Core language for the implementation.
+- **IntelliJ IDEA** or other Java IDEs for development.
+- **Java Collections Framework**: For handling the shopping cart and item management.
+  ```java
+package AdvancedOnlineShoppingSystem;
+import java.util.*;
+
+public class AdvancedOnlineShoppingSystem {
+
+    // Abstract Class: ShoppingItem
+    abstract static class ShoppingItem {
+        protected String itemId, itemName, itemDescription;
+        protected double price;
+        protected int stockAvailable;
+
+        public ShoppingItem(String itemId, String itemName, String itemDescription, double price, int stockAvailable) {
+            if (price <= 0) throw new IllegalArgumentException("Price must be greater than 0.");
+            if (stockAvailable < 0) throw new IllegalArgumentException("Stock cannot be negative.");
+            this.itemId = itemId;
+            this.itemName = itemName;
+            this.itemDescription = itemDescription;
+            this.price = price;
+            this.stockAvailable = stockAvailable;
+        }
+
+        public abstract void updateStock(int quantity);
+        public abstract void addToCart(Customer customer);
+        public abstract void generateInvoice(Customer customer);
+        public abstract void validateItem();
+    }
+
+    // Concrete Classes (5 Total):
+    // ElectronicsItem
+    static class ElectronicsItem extends ShoppingItem {
+        private int warrantyMonths;
+
+        public ElectronicsItem(String itemId, String itemName, String itemDescription, double price, int stockAvailable, int warrantyMonths) {
+            super(itemId, itemName, itemDescription, price, stockAvailable);
+            this.warrantyMonths = warrantyMonths;
+        }
+
+        public void updateStock(int quantity) {
+            this.stockAvailable += quantity;
+        }
+
+        public void addToCart(Customer customer) {
+            if (this.stockAvailable <= 0) {
+                System.out.println("Item out of stock: " + itemName);
+                return;
+            }
+            customer.getCart().addItem(this);
+            this.stockAvailable--;
+        }
+
+        public void generateInvoice(Customer customer) {
+            System.out.println("Invoice for Electronics Item: " + itemName + ", Warranty: " + warrantyMonths + " months, Price: " + price);
+        }
+
+        public void validateItem() {
+            if (stockAvailable <= 0) {
+                System.out.println("Validation failed: No stock for " + itemName);
+            }
+        }
+    }
+
+    // ClothingItem
+    static class ClothingItem extends ShoppingItem {
+        private String size;
+
+        public ClothingItem(String itemId, String itemName, String itemDescription, double price, int stockAvailable, String size) {
+            super(itemId, itemName, itemDescription, price, stockAvailable);
+            this.size = size;
+        }
+
+        public void updateStock(int quantity) {
+            this.stockAvailable += quantity;
+        }
+
+        public void addToCart(Customer customer) {
+            if (this.stockAvailable <= 0) {
+                System.out.println("Item out of stock: " + itemName);
+                return;
+            }
+            customer.getCart().addItem(this);
+            this.stockAvailable--;
+        }
+
+        public void generateInvoice(Customer customer) {
+            System.out.println("Invoice for Clothing Item: " + itemName + ", Size: " + size + ", Price: " + price);
+        }
+
+        public void validateItem() {
+            if (stockAvailable <= 0) {
+                System.out.println("Validation failed: No stock for " + itemName);
+            }
+        }
+    }
+
+    // GroceriesItem
+    static class GroceriesItem extends ShoppingItem {
+        private Date expirationDate;
+
+        public GroceriesItem(String itemId, String itemName, String itemDescription, double price, int stockAvailable, Date expirationDate) {
+            super(itemId, itemName, itemDescription, price, stockAvailable);
+            this.expirationDate = expirationDate;
+        }
+
+        public void updateStock(int quantity) {
+            this.stockAvailable += quantity;
+        }
+
+        public void addToCart(Customer customer) {
+            if (this.stockAvailable <= 0) {
+                System.out.println("Item out of stock: " + itemName);
+                return;
+            }
+            customer.getCart().addItem(this);
+            this.stockAvailable--;
+        }
+
+        public void generateInvoice(Customer customer) {
+            System.out.println("Invoice for Grocery Item: " + itemName + ", Expiration: " + expirationDate + ", Price: " + price);
+        }
+
+        public void validateItem() {
+            Date today = new Date();
+            if (expirationDate.before(today)) {
+                System.out.println("Validation failed: Expired product " + itemName);
+            }
+        }
+    }
+
+    // BooksItem
+    static class BooksItem extends ShoppingItem {
+        private String ISBN;
+
+        public BooksItem(String itemId, String itemName, String itemDescription, double price, int stockAvailable, String ISBN) {
+            super(itemId, itemName, itemDescription, price, stockAvailable);
+            this.ISBN = ISBN;
+        }
+
+        public void updateStock(int quantity) {
+            this.stockAvailable += quantity;
+        }
+
+        public void addToCart(Customer customer) {
+            if (this.stockAvailable <= 0) {
+                System.out.println("Item out of stock: " + itemName);
+                return;
+            }
+            customer.getCart().addItem(this);
+            this.stockAvailable--;
+        }
+
+        public void generateInvoice(Customer customer) {
+            System.out.println("Invoice for Book: " + itemName + ", ISBN: " + ISBN + ", Price: " + price);
+        }
+
+        public void validateItem() {
+            if (stockAvailable <= 0) {
+                System.out.println("Validation failed: No stock for " + itemName);
+            }
+        }
+    }
+
+    // AccessoriesItem
+    static class AccessoriesItem extends ShoppingItem {
+        private String customerReview;
+
+        public AccessoriesItem(String itemId, String itemName, String itemDescription, double price, int stockAvailable) {
+            super(itemId, itemName, itemDescription, price, stockAvailable);
+            this.customerReview = "";
+        }
+
+        public void addReview(String review) {
+            this.customerReview = review;
+        }
+
+        public void updateStock(int quantity) {
+            this.stockAvailable += quantity;
+        }
+
+        public void addToCart(Customer customer) {
+            if (this.stockAvailable <= 0) {
+                System.out.println("Item out of stock: " + itemName);
+                return;
+            }
+            customer.getCart().addItem(this);
+            this.stockAvailable--;
+        }
+
+        public void generateInvoice(Customer customer) {
+            System.out.println("Invoice for Accessory: " + itemName + ", Price: " + price + ", Review: " + customerReview);
+        }
+
+        public void validateItem() {
+            if (stockAvailable <= 0) {
+                System.out.println("Validation failed: No stock for " + itemName);
+            }
+        }
+    }
+
+    // Customer Class
+    static class Customer {
+        private String customerId, customerName, email, address, phone;
+        private ShoppingCart cart;
+
+        public Customer(String customerId, String customerName, String email, String address, String phone) {
+            if (!email.contains("@")) throw new IllegalArgumentException("Invalid email.");
+            if (phone.length() < 8) throw new IllegalArgumentException("Invalid phone number.");
+            this.customerId = customerId;
+            this.customerName = customerName;
+            this.email = email;
+            this.address = address;
+            this.phone = phone;
+            this.cart = new ShoppingCart(this);
+        }
+
+        public ShoppingCart getCart() {
+            return cart;
+        }
+    }
+
+    // ShoppingCart Class
+    static class ShoppingCart {
+        private static int cartCounter = 1;
+        private String cartId;
+        private List<ShoppingItem> cartItems;
+        private double totalPrice;
+        private Customer customer;
+
+        public ShoppingCart(Customer customer) {
+            this.cartId = "CART" + (cartCounter++);
+            this.cartItems = new ArrayList<>();
+            this.totalPrice = 0;
+            this.customer = customer;
+        }
+
+        public void addItem(ShoppingItem item) {
+            cartItems.add(item);
+            totalPrice += item.price;
+        }
+
+        public double getTotalPrice() {
+            return totalPrice;
+        }
+
+        public List<ShoppingItem> getCartItems() {
+            return cartItems;
+        }
+    }
+
+    // Payment Class
+    static class Payment {
+        private String paymentId;
+        private String paymentMethod;
+        private double amountPaid;
+        private Date transactionDate;
+
+        public Payment(String paymentId, String paymentMethod, double amountPaid) {
+            if (!(paymentMethod.equalsIgnoreCase("Credit Card") || paymentMethod.equalsIgnoreCase("PayPal"))) {
+                throw new IllegalArgumentException("Invalid payment method!");
+            }
+            this.paymentId = paymentId;
+            this.paymentMethod = paymentMethod;
+            this.amountPaid = amountPaid;
+            this.transactionDate = new Date();
+        }
+
+        public void printReceipt() {
+            System.out.println("Payment ID: " + paymentId);
+            System.out.println("Method: " + paymentMethod);
+            System.out.println("Amount Paid: $" + amountPaid);
+            System.out.println("Date: " + transactionDate);
+        }
+    }
+
+    // Main Class
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Enter Customer Details:");
+        System.out.print("Name: ");
+        String name = sc.nextLine();
+        System.out.print("Email: ");
+        String email = sc.nextLine();
+        System.out.print("Address: ");
+        String address = sc.nextLine();
+        System.out.print("Phone: ");
+        String phone = sc.nextLine();
+
+        Customer customer = new Customer("CUST001", name, email, address, phone);
+
+        ElectronicsItem laptop = new ElectronicsItem("E001", "Laptop", "Gaming Laptop", 1200, 5, 24);
+        ClothingItem shirt = new ClothingItem("C001", "T-Shirt", "Summer Collection", 30, 20, "M");
+
+        System.out.println("Available Items:");
+        System.out.println("1. Laptop - $1200");
+        System.out.println("2. T-Shirt - $30");
+
+        System.out.print("Enter choice to add to cart (1 or 2): ");
+        int choice = sc.nextInt();
+
+        if (choice == 1) {
+            laptop.addToCart(customer);
+        } else if (choice == 2) {
+            shirt.addToCart(customer);
+        } else {
+            System.out.println("Invalid choice.");
+        }
+
+        System.out.println("Cart Total: $" + customer.getCart().getTotalPrice());
+
+        System.out.print("Enter Payment Method (Credit Card/PayPal): ");
+        sc.nextLine(); // consume newline
+        String paymentMethod = sc.nextLine();
+        Payment payment = new Payment("PAY001", paymentMethod, customer.getCart().getTotalPrice());
+
+        payment.printReceipt();
+    }
+}
+```
+
