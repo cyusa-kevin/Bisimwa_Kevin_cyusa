@@ -788,7 +788,7 @@ public class AdvancedOnlineShoppingSystem {
         payment.printReceipt();
     }
 
-```
+
 # Advanced Stock Management System
 
 ## Introduction
