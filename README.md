@@ -803,27 +803,115 @@ The **Advanced Stock Management System** is a Java-based console application des
 
 ---
 
-## Technologies Used
+```java
+package AdvancedStockManagementSystem;
 
-- **Java**: The core programming language used for the implementation.
-- **Scanner**: Used for taking user input through the console.
+import java.util.Scanner;
 
----
+ public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
 
-## Getting Started
+        int itemId = 0, quantityInStock = 0;
+        double pricePerUnit = 0.0;
+        String itemName = "", category = "", supplier = "";
+        boolean hasStock = false;
 
-### Prerequisites
+        while (true) {
+            System.out.println("\n====== Stock Management Menu ======");
+            System.out.println("1. Add Stock Item");
+            System.out.println("2. View Stock Report");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+            int choice;
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a number between 1 and 3.");
+                continue;
+            }
 
-Ensure you have the following installed:
-- **Java JDK 8 or higher** (Available from [Oracle](https://www.oracle.com/java/technologies/javase-jdk8-downloads.html)).
-- **Any Java IDE** (e.g., IntelliJ IDEA, Eclipse, or NetBeans).
+            switch (choice) {
+                case 1:
+                    // Validate integer item ID
+                    while (true) {
+                        System.out.print("Enter Item ID (integer): ");
+                        try {
+                            itemId = Integer.parseInt(sc.nextLine());
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Item ID must be an integer.");
+                        }
+                    }
 
-### Clone the Repository
+                    System.out.print("Enter Item Name: ");
+                    itemName = sc.nextLine();
 
-Clone the repository to your local machine with:
+                    System.out.print("Enter Category: ");
+                    category = sc.nextLine();
 
-```bash
-git clone https://github.com/yourusername/AdvancedStockManagementSystem.git
+                    System.out.print("Enter Supplier: ");
+                    supplier = sc.nextLine();
+
+                    // Validate positive quantity
+                    while (true) {
+                        System.out.print("Enter Quantity in Stock: ");
+                        try {
+                            quantityInStock = Integer.parseInt(sc.nextLine());
+                            if (quantityInStock < 0) {
+                                System.out.println("Quantity must not be negative.");
+                            } else break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Quantity must be an integer.");
+                        }
+                    }
+
+                    // Validate positive price
+                    while (true) {
+                        System.out.print("Enter Price per Unit: ");
+                        try {
+                            pricePerUnit = Double.parseDouble(sc.nextLine());
+                            if (pricePerUnit <= 0) {
+                                System.out.println("Price must be greater than 0.");
+                            } else break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Price must be a number.");
+                        }
+                    }
+
+                    hasStock = true;
+                    System.out.println("✅ Stock item added successfully!");
+                    break;
+
+                case 2:
+                    if (hasStock) {
+                        double stockValue = quantityInStock * pricePerUnit;
+                        System.out.println("\n===== Stock Report =====");
+                        System.out.println("Item ID: " + itemId);
+                        System.out.println("Name: " + itemName);
+                        System.out.println("Category: " + category);
+                        System.out.println("Supplier: " + supplier);
+                        System.out.println("Quantity: " + quantityInStock);
+                        System.out.println("Price per Unit: $" + pricePerUnit);
+                        System.out.println("Total Stock Value: $" + stockValue);
+                    } else {
+                        System.out.println("⚠ No stock item added yet.");
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("👋 Exiting program. Goodbye!");
+                    sc.close();
+                    return;
+
+                default:
+                    System.out.println("Invalid choice. Please select 1, 2 or 3.");
+            }
+        }
+    }
+}
+
+
 
 
 
